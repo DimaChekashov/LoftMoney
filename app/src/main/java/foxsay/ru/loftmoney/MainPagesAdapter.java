@@ -12,8 +12,9 @@ public class MainPagesAdapter extends FragmentPagerAdapter {
 
     private static final int PAGE_INCOMES = 0;
     private static final int PAGE_EXPENSES = 1;
+    private static final int PAGE_BALANCE = 2;
 
-    private static int PAGE_COUNT = 2;
+    private static int PAGE_COUNT = 3;
 
     private Context context;
 
@@ -31,6 +32,9 @@ public class MainPagesAdapter extends FragmentPagerAdapter {
                 return ItemsFragment.newInstance(ItemsFragment.TYPE_INCOMES);
             case PAGE_EXPENSES:
                 return ItemsFragment.newInstance(ItemsFragment.TYPE_EXPENSES);
+            case PAGE_BALANCE:
+                BalanceFragment balanceFragment = new BalanceFragment();
+                return balanceFragment;
             default:
                 return new ItemsFragment();
         }
@@ -49,6 +53,8 @@ public class MainPagesAdapter extends FragmentPagerAdapter {
                 return context.getString(R.string.main_tab_incomes);
             case PAGE_EXPENSES:
                 return context.getString(R.string.main_tab_expenses);
+            case PAGE_BALANCE:
+                return context.getString(R.string.main_tab_balance);
             default:
                 return "";
         }

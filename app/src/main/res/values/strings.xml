@@ -7,4 +7,6 @@
 
     <string name="main_tab_incomes">Доходы</string>
     <string name="main_tab_expenses">Расходы</string>
+    <string name="main_tab_balance">Баланс</string>
+
 </resources>
