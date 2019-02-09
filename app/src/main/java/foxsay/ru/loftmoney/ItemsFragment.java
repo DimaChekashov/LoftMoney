@@ -1,6 +1,9 @@
 package foxsay.ru.loftmoney;
 
 
+import android.annotation.SuppressLint;
+import android.app.Application;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,12 +12,18 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,11 +33,13 @@ import java.util.List;
  */
 public class ItemsFragment extends Fragment {
 
-    public static ItemsFragment newInstance(int type) {
+    private static final String TAG = "itemsFragment";
+
+    public static ItemsFragment newInstance(String type) {
         ItemsFragment fragment = new ItemsFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putInt(KEY_TYPE, type);
+        bundle.putString(KEY_TYPE, type);
 
         fragment.setArguments(bundle);
 
@@ -36,14 +47,15 @@ public class ItemsFragment extends Fragment {
 
     }
 
-    public static final int TYPE_UNKNOWN = 0;
-    public static final int TYPE_INCOMES = 1;
-    public static final int TYPE_EXPENSES = 2;
 
     public static final String KEY_TYPE = "type";
 
+    private String token = "$2y$10$MI9aJHOPZNR1WLHMPoRkx.6geJcwuzU/JxArRxeOoK9KXyPs3DzfG";
+
     private ItemsAdapter adapter;
-    private int type;
+    private String type;
+
+    private Api api;
 
     public ItemsFragment() {
 
@@ -54,18 +66,11 @@ public class ItemsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         adapter = new ItemsAdapter();
 
-        Bundle arguments = getArguments();
+        type = getArguments().getString(KEY_TYPE);
 
-        if (arguments == null) {
-            throw new IllegalStateException("You mast set fragment type");
-        }
-
-        type = getArguments().getInt(KEY_TYPE, TYPE_UNKNOWN);
-
-        if (type == TYPE_UNKNOWN) {
-            throw new IllegalStateException("Unknown fragment type");
-        }
-
+        Application application = getActivity().getApplication();
+        App app = (App) application;
+        api = app.getApi();
     }
 
     @Override
@@ -83,15 +88,24 @@ public class ItemsFragment extends Fragment {
         recycler.setLayoutManager(new LinearLayoutManager(requireContext()));
         recycler.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
 
-        adapter.setItems(createTempItems());
+        loadItems();
     }
 
-    private List<Item> createTempItems() {
-        List<Item> items = new ArrayList<>();
-        items.add(new Item("Молоко", "70"));
-        items.add(new Item("Зубная щётка", "70"));
-        items.add(new Item("Сковородка с антипригарным покрытием", "1670"));
+    private void loadItems() {
+        Call call = api.getItems(type, token);
 
-        return items;
+        call.enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                List<Item> items = (List<Item>) response.body();
+                adapter.setItems(items);
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                Log.e(TAG, "onFailure: ", t);
+            }
+        });
     }
+
 }
