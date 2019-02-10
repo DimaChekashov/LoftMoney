@@ -10,27 +10,27 @@
         android:id="@+id/add_item_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="@dimen/edit_text_item_margin"
         android:layout_marginTop="100dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="@dimen/edit_text_item_margin"
         android:hint="@string/add_item_hint_name"
         android:inputType="text"
         android:maxLines="1"
         android:textColor="@color/colorPrimary"
-        android:textSize="24sp" />
+        android:textSize="@dimen/edit_text_item_size" />
 
     <EditText
         android:id="@+id/add_item_price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="@dimen/edit_text_item_margin"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="@dimen/edit_text_item_margin"
         android:hint="@string/add_item_hint_price"
         android:inputType="number"
         android:maxLines="1"
         android:textColor="@color/colorPrimary"
-        android:textSize="24sp" />
+        android:textSize="@dimen/edit_text_item_size" />
 
     <Button
         android:id="@+id/add_item_button"
