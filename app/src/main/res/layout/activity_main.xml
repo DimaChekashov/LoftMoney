@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         app:tabBackground="@color/colorPrimary"
-        app:tabSelectedTextColor="#ffffff"
-        app:tabTextColor="#8baaef">
+        app:tabSelectedTextColor="@color/tab_selected_text_color"
+        app:tabTextColor="@color/tab_text_color">
 
     </com.google.android.material.tabs.TabLayout>
 
