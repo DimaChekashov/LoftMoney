@@ -6,31 +6,43 @@
     android:orientation="vertical"
     tools:context=".AddItemActivity">
 
-    <EditText
-        android:id="@+id/add_item_name"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/edit_text_item_margin"
         android:layout_marginTop="100dp"
         android:layout_marginEnd="@dimen/edit_text_item_margin"
-        android:hint="@string/add_item_hint_name"
-        android:inputType="text"
-        android:maxLines="1"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/edit_text_item_size" />
+        android:hint="@string/add_item_hint_name">
 
-    <EditText
-        android:id="@+id/add_item_price"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/add_item_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/edit_text_item_size" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/edit_text_item_margin"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="@dimen/edit_text_item_margin"
-        android:hint="@string/add_item_hint_price"
-        android:inputType="number"
-        android:maxLines="1"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/edit_text_item_size" />
+        android:hint="@string/add_item_hint_price">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/add_item_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLines="1"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/edit_text_item_size" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/add_item_button"

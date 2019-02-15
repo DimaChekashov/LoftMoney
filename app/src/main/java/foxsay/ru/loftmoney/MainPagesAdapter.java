@@ -10,9 +10,9 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 public class MainPagesAdapter extends FragmentPagerAdapter {
 
-    private static final int PAGE_INCOMES = 1;
-    private static final int PAGE_EXPENSES = 0;
-    private static final int PAGE_BALANCE = 2;
+    static final int PAGE_INCOMES = 1;
+    static final int PAGE_EXPENSES = 0;
+    static final int PAGE_BALANCE = 2;
 
     private static int PAGE_COUNT = 3;
 
@@ -33,8 +33,7 @@ public class MainPagesAdapter extends FragmentPagerAdapter {
             case PAGE_EXPENSES:
                 return ItemsFragment.newInstance(Item.TYPE_EXPENSE);
             case PAGE_BALANCE:
-                BalanceFragment balanceFragment = new BalanceFragment();
-                return balanceFragment;
+                return BalanceFragment.newInstance();
             default:
                 return new ItemsFragment();
         }
