@@ -113,16 +113,16 @@ public class ItemsFragment extends Fragment {
     private void loadItems() {
         Call<List<Item>> call = api.getItems(type, token);
 
-        call.enqueue(new Callback() {
+        call.enqueue(new Callback<List<Item>>() {
             @Override
-            public void onResponse(Call call, Response response) {
+            public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
                 refresh.setRefreshing(false);
                 List<Item> items = (List<Item>) response.body();
                 adapter.setItems(items);
             }
 
             @Override
-            public void onFailure(Call call, Throwable t) {
+            public void onFailure(Call<List<Item>> call, Throwable t) {
                 refresh.setRefreshing(false);
                 Log.e(TAG, "onFailure: ", t);
             }
