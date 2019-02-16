@@ -111,17 +111,11 @@ public class ItemsFragment extends Fragment {
     }
 
     private void loadItems() {
-        Call call = api.getItems(type, token);
+        Call<List<Item>> call = api.getItems(type, token);
 
         call.enqueue(new Callback() {
-            private Call call;
-            private Response response;
-
             @Override
             public void onResponse(Call call, Response response) {
-                this.call = call;
-                this.response = response;
-
                 refresh.setRefreshing(false);
                 List<Item> items = (List<Item>) response.body();
                 adapter.setItems(items);
