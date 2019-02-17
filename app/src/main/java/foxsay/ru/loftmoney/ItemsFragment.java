@@ -121,7 +121,7 @@ public class ItemsFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
                 refresh.setRefreshing(false);
-                List<Item> items = (List<Item>) response.body();
+                List<Item> items = response.body();
                 adapter.setItems(items);
             }
 
