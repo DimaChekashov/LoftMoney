@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".AuthActivity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_logo" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
+        android:textSize="36sp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/enter_btn"
+        android:layout_width="130dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/auth_enter"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp"
+        app:backgroundTint="@color/white"
+        app:cornerRadius="24dp" />
+
+</LinearLayout>
