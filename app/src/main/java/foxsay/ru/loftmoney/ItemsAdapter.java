@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHolder> {
 
     private List<Item> items = Collections.emptyList();
+    private ItemsAdapterListener listener = null;
 
     public void setItems(List<Item> items) {
         this.items = items;
@@ -24,6 +25,10 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
     public void addItem(Item item) {
         this.items.add(item);
         notifyItemInserted(items.size());
+    }
+
+    void setListener(ItemsAdapterListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -62,9 +67,27 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
             price = itemView.findViewById(R.id.price);
         }
 
-        public void bindItem(Item item) {
+        void bindItem(Item item) {
             name.setText(item.getName());
             price.setText(String.valueOf(item.getPrice()));
+        }
+
+        void setListener(Item item, ItemsAdapterListener listener, int position) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listener =! null) {
+                        listener.onItemClick(item, position);
+                    }
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    return false;
+                }
+            });
         }
 
     }
