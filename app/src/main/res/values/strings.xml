@@ -11,4 +11,8 @@
 
     <string name="main_screen_title">Учет бюджета</string>
     <string name="auth_enter">Войти</string>
+    
+    <string name="action_mode_item_delete">Удалить</string>
+
+    <string name="dialog_message">Вы действительно хотите удалить выбранные элементы?</string>
 </resources>
