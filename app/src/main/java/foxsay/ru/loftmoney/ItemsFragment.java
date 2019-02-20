@@ -100,7 +100,9 @@ public class ItemsFragment extends Fragment {
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                actionMode.finish();
+                if (actionMode != null) {
+                    actionMode.finish();
+                }
                 loadItems();
             }
         });
