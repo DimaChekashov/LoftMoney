@@ -16,4 +16,8 @@
 
     <string name="dialog_message">Вы действительно хотите удалить выбранные элементы?</string>
     <string name="selected_label">Выделено:</string>
+
+    <string name="balance_view_balance_title">Доступные финансы</string>
+    <string name="balance_view_expense_title">Расход</string>
+    <string name="balance_view_income_title">Доход</string>
 </resources>
