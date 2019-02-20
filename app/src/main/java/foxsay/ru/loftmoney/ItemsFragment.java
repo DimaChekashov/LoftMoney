@@ -100,6 +100,7 @@ public class ItemsFragment extends Fragment {
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                actionMode.finish();
                 loadItems();
             }
         });
@@ -272,6 +273,6 @@ public class ItemsFragment extends Fragment {
 
     private void onListItemSelect() {
         if (actionMode != null)
-            actionMode.setTitle("Выделено: " + String.valueOf(adapter.getSelectedPositions().size()));
+            actionMode.setTitle(ItemsFragment.this.getResources().getString(R.string.selected_label) + " " + String.valueOf(adapter.getSelectedPositions().size()));
     }
 }

@@ -15,4 +15,5 @@
     <string name="action_mode_item_delete">Удалить</string>
 
     <string name="dialog_message">Вы действительно хотите удалить выбранные элементы?</string>
+    <string name="selected_label">Выделено:</string>
 </resources>
