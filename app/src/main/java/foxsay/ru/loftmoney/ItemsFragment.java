@@ -1,13 +1,11 @@
 package foxsay.ru.loftmoney;
 
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,8 +20,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import android.os.Handler;
-import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ActionMode;
@@ -34,8 +30,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -182,18 +176,20 @@ public class ItemsFragment extends Fragment {
 
         @Override
         public void onItemClick(Item item, int position) {
-            Log.i(TAG, "onItemClick: " + item.getName());
 
             if (actionMode == null) {
                 return;
             }
 
             toggleItem(position);
+
+            if (actionMode != null) {
+                onListItemSelect();
+            }
         }
 
         @Override
         public void onItemLongClick(Item item, int position) {
-            Log.i(TAG, "onItemLongClick: " + item.getName());
 
             if (actionMode != null) {
                 return;
@@ -201,6 +197,7 @@ public class ItemsFragment extends Fragment {
 
             getActivity().startActionMode(new ActionModaCallback());
             toggleItem(position);
+            onListItemSelect();
         }
 
         private void toggleItem(int position) {
@@ -271,5 +268,10 @@ public class ItemsFragment extends Fragment {
 
             dialog.show();
         }
+    }
+
+    private void onListItemSelect() {
+        if (actionMode != null)
+            actionMode.setTitle("Выделено: " + String.valueOf(adapter.getSelectedPositions().size()));
     }
 }
