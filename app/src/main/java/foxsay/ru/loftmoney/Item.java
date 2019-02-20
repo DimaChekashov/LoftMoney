@@ -5,6 +5,7 @@ public class Item {
     public static final String TYPE_INCOME = "income";
     public static final String TYPE_EXPENSE = "expense";
 
+    private Long id;
     private String name;
     private Double price;
     private String type;
@@ -13,6 +14,14 @@ public class Item {
         this.name = name;
         this.price = price;
         this.type = type;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

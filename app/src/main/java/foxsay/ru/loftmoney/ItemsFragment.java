@@ -1,16 +1,16 @@
 package foxsay.ru.loftmoney;
 
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,16 +20,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import android.os.Handler;
-import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -63,6 +63,7 @@ public class ItemsFragment extends Fragment {
     private String type;
 
     private Api api;
+    private ActionMode actionMode;
 
     public ItemsFragment() {
 
@@ -71,7 +72,9 @@ public class ItemsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         adapter = new ItemsAdapter();
+        adapter.setListener(new AdapterListener());
 
         type = getArguments().getString(KEY_TYPE);
 
@@ -97,6 +100,7 @@ public class ItemsFragment extends Fragment {
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                actionMode.finish();
                 loadItems();
             }
         });
@@ -133,6 +137,25 @@ public class ItemsFragment extends Fragment {
         });
     }
 
+    private void removeItem(Long id) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        String token = preferences.getString("auth_token", null);
+
+        Call<Object> call = api.removeItem(id, token);
+
+        call.enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+
+            }
+        });
+    }
+
     void onFabClick() {
         Intent intent = new Intent(requireContext(), AddItemActivity.class);
         intent.putExtra(AddItemActivity.KEY_TYPE, type);
@@ -148,5 +171,108 @@ public class ItemsFragment extends Fragment {
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    private class AdapterListener implements ItemsAdapterListener {
+
+        @Override
+        public void onItemClick(Item item, int position) {
+
+            if (actionMode == null) {
+                return;
+            }
+
+            toggleItem(position);
+
+            if (actionMode != null) {
+                onListItemSelect();
+            }
+        }
+
+        @Override
+        public void onItemLongClick(Item item, int position) {
+
+            if (actionMode != null) {
+                return;
+            }
+
+            getActivity().startActionMode(new ActionModaCallback());
+            toggleItem(position);
+            onListItemSelect();
+        }
+
+        private void toggleItem(int position) {
+            adapter.toggleItem(position);
+        }
+    }
+
+    private class ActionModaCallback implements ActionMode.Callback {
+
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            actionMode = mode;
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+
+            MenuInflater inflater = new MenuInflater(requireContext());
+            inflater.inflate(R.menu.menu_action_mode, menu);
+
+            return true;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            if (item.getItemId() == R.id.delete_item) {
+                showDialog();
+                return true;
+            }
+
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            actionMode = null;
+            adapter.clearSelections();
+        }
+
+        void removeSelectedItems() {
+            List<Integer> selectedPositions = adapter.getSelectedPositions();
+
+            for (int i = selectedPositions.size() - 1; i >= 0; i--) {
+                Item item = adapter.removeItem(selectedPositions.get(i));
+                removeItem(item.getId());
+            }
+
+            actionMode.finish();
+        }
+
+        void showDialog() {
+            AlertDialog dialog = new AlertDialog.Builder(requireContext())
+                    .setMessage(R.string.dialog_message)
+                    .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            removeSelectedItems();
+                        }
+                    })
+                    .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .create();
+
+            dialog.show();
+        }
+    }
+
+    private void onListItemSelect() {
+        if (actionMode != null)
+            actionMode.setTitle(ItemsFragment.this.getResources().getString(R.string.selected_label) + " " + String.valueOf(adapter.getSelectedPositions().size()));
     }
 }
