@@ -1,6 +1,7 @@
 package foxsay.ru.loftmoney;
 
 import android.content.Context;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +17,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHolder> {
 
+    private static final String TAG = "itemsAdapter";
+
     private List<Item> items = Collections.emptyList();
     private ItemsAdapterListener listener = null;
 
     private SparseBooleanArray selectedItems = new SparseBooleanArray();
+
+    private String type;
+
+    public ItemsAdapter(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
 
     public void setItems(List<Item> items) {
         this.items = items;
@@ -76,7 +89,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.item, parent, false);
-        return new ItemViewHolder(view);
+
+        return new ItemViewHolder(view, getType());
     }
 
     @Override
@@ -98,13 +112,19 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
 
         private Context context;
 
-        public ItemViewHolder(@NonNull View itemView) {
+        public ItemViewHolder(@NonNull View itemView, String type) {
             super(itemView);
 
             context = itemView.getContext();
 
             name = itemView.findViewById(R.id.name);
             price = itemView.findViewById(R.id.price);
+
+            if (type.equals(Item.TYPE_INCOME)) {
+                price.setTextColor(context.getResources().getColor(R.color.income_color));
+            } else {
+                price.setTextColor(context.getResources().getColor(R.color.expense_color));
+            }
         }
 
         void bindItem(Item item, boolean selected) {
