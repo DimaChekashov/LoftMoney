@@ -5,6 +5,5 @@
     <dimen name="edit_text_item_margin">32dp</dimen>
     <dimen name="edit_text_item_size">24sp</dimen>
 
-    <dimen name="balance_block_padding_side">16dp</dimen>
-    <dimen name="balance_block_padding_on_side">26dp</dimen>
+    <dimen name="balance_text_padding_side">16dp</dimen>
 </resources>
