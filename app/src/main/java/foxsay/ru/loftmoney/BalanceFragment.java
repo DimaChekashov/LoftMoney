@@ -13,21 +13,18 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import android.preference.PreferenceManager;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
-
-
 /**
  * A simple {@link Fragment} subclass.
  */
 public class BalanceFragment extends Fragment {
 
+    private static final String TAG = "balanceFragment";
 
     public BalanceFragment() {
         // Required empty public constructor
@@ -85,20 +82,24 @@ public class BalanceFragment extends Fragment {
 
         call.enqueue(new Callback<BalanceResponse>() {
             @Override
-            public void onResponse(Call<BalanceResponse> call, Response<BalanceResponse> response) {
+            public void onResponse(@NonNull Call<BalanceResponse> call, @NonNull Response<BalanceResponse> response) {
                 BalanceResponse balanceResponse = response.body();
 
-                int balance = balanceResponse.getTotalIncome() - balanceResponse.getTotalExpense();
+                if (balanceResponse != null) {
+                    int balance = balanceResponse.getTotalIncome() - balanceResponse.getTotalExpense();
 
-                balanceView.setText(String.valueOf(balance + " " + Html.fromHtml(" &#x20bd")));
-                expenseView.setText(String.valueOf(balanceResponse.getTotalExpense() + " " + Html.fromHtml(" &#x20bd")));
-                incomeView.setText(String.valueOf(balanceResponse.getTotalIncome() + " " + Html.fromHtml(" &#x20bd")));
+                    balanceView.setText(getString(R.string.count, balance));
+                    expenseView.setText(getString(R.string.count, balanceResponse.getTotalExpense()));
+                    incomeView.setText(getString(R.string.count, balanceResponse.getTotalIncome()));
 
-                diagramView.update(balanceResponse.getTotalIncome(), balanceResponse.getTotalExpense());
+                    diagramView.update(balanceResponse.getTotalIncome(), balanceResponse.getTotalExpense());
+                } else {
+                    Log.i(TAG, "balanceResponse: " + balanceResponse);
+                }
             }
 
             @Override
-            public void onFailure(Call<BalanceResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<BalanceResponse> call, @NonNull Throwable t) {
 
             }
         });
