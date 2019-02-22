@@ -1,6 +1,7 @@
 package foxsay.ru.loftmoney;
 
 import android.content.Context;
+import android.text.Html;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -129,7 +130,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
 
         void bindItem(Item item, boolean selected) {
             name.setText(item.getName());
-            price.setText(String.valueOf(item.getPrice()));
+            price.setText(String.valueOf(item.getPrice() + " " + Html.fromHtml(" &#x20bd")));
 
             itemView.setSelected(selected);
         }

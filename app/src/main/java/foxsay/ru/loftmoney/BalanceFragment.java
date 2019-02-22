@@ -13,6 +13,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,9 +90,9 @@ public class BalanceFragment extends Fragment {
 
                 int balance = balanceResponse.getTotalIncome() - balanceResponse.getTotalExpense();
 
-                balanceView.setText(String.valueOf(balance));
-                expenseView.setText(String.valueOf(balanceResponse.getTotalExpense()));
-                incomeView.setText(String.valueOf(balanceResponse.getTotalIncome()));
+                balanceView.setText(String.valueOf(balance + " " + Html.fromHtml(" &#x20bd")));
+                expenseView.setText(String.valueOf(balanceResponse.getTotalExpense() + " " + Html.fromHtml(" &#x20bd")));
+                incomeView.setText(String.valueOf(balanceResponse.getTotalIncome() + " " + Html.fromHtml(" &#x20bd")));
 
                 diagramView.update(balanceResponse.getTotalIncome(), balanceResponse.getTotalExpense());
             }
