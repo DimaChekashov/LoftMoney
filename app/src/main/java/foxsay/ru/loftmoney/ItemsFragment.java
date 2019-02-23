@@ -62,6 +62,7 @@ public class ItemsFragment extends Fragment {
     private ItemsAdapter adapter;
     private String type;
 
+
     private Api api;
     private ActionMode actionMode;
 
@@ -73,10 +74,10 @@ public class ItemsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        adapter = new ItemsAdapter();
-        adapter.setListener(new AdapterListener());
-
         type = getArguments().getString(KEY_TYPE);
+
+        adapter = new ItemsAdapter(type);
+        adapter.setListener(new AdapterListener());
 
         Application application = getActivity().getApplication();
         App app = (App) application;
@@ -100,7 +101,9 @@ public class ItemsFragment extends Fragment {
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                actionMode.finish();
+                if (actionMode != null) {
+                    actionMode.finish();
+                }
                 loadItems();
             }
         });
@@ -126,6 +129,7 @@ public class ItemsFragment extends Fragment {
             public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
                 refresh.setRefreshing(false);
                 List<Item> items = response.body();
+
                 adapter.setItems(items);
             }
 

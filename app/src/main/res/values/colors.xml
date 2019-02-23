@@ -17,6 +17,12 @@
 
     <color name="action_mode_color">#333f59</color>
 
+    <color name="expense_color">#4a90e2</color>
+    <color name="income_color">#7ed321</color>
+    <color name="balance_color">#ff9e57</color>
+    
+    <color name="divider_color">#efefef</color>
+
     <color name="item_background_color_selected">#f2f2f2</color>
     <color name="item_background_color_default">#ffffff</color>
 
